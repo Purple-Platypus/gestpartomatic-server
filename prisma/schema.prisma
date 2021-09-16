@@ -1,0 +1,193 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id              String         @id @default(uuid())
+  email           String         @unique
+  username        String         @unique
+  nickname        String?
+  avatar          String
+  password        String
+  settingDarkMode Boolean        @default(false)
+  refreshToken    String?
+  teams           TeamsOnUsers[]
+  createdTodos    Todo[]
+  assignedTodos   UsersOnTodos[]
+  comments        Comment[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  deletedAt       DateTime?
+}
+
+model Team {
+  id          Int            @id @default(autoincrement())
+  name        String         @unique
+  description String?
+  image       String
+  users       TeamsOnUsers[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  deletedAt   DateTime?
+  boards      Board[]
+  Tags        Tag[]
+}
+
+model TeamsOnUsers {
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  team      Team      @relation(fields: [teamId], references: [id])
+  teamId    Int
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@id([userId, teamId])
+}
+
+model Board {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  team        Team      @relation(fields: [teamId], references: [id])
+  teamId      Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  lists       List[]
+}
+
+model List {
+  id        Int       @id @default(autoincrement())
+  name      String
+  rank      Int
+  board     Board     @relation(fields: [boardId], references: [id])
+  boardId   Int
+  todos     Todo[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Todo {
+  id          Int            @id @default(autoincrement())
+  rank        Int
+  title       String
+  description String?
+  milestone   Milestone?     @relation(fields: [milestoneId], references: [id])
+  deadline    DateTime?
+  priority    Priority       @default(NORMAL)
+  isPrivate   Boolean        @default(false)
+  isArchived  Boolean        @default(false)
+  list        List?          @relation(fields: [listId], references: [id])
+  listId      Int?
+  author      User           @relation(fields: [authorId], references: [id])
+  authorId    String
+  assignees   UsersOnTodos[]
+  tags        TagsOnTodos[]
+  comments    Comment[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  deletedAt   DateTime?
+  milestoneId Int?
+}
+
+model UsersOnTodos {
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  todo      Todo      @relation(fields: [todoId], references: [id])
+  todoId    Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@id([userId, todoId])
+}
+
+model Comment {
+  id        Int       @id @default(autoincrement())
+  comment   String
+  todo      Todo      @relation(fields: [todoId], references: [id])
+  todoId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  rank      Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Tag {
+  id        Int           @id @default(autoincrement())
+  label     String
+  color     Int
+  team      Team          @relation(fields: [teamId], references: [id])
+  teamId    Int
+  todos     TagsOnTodos[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  deletedAt DateTime?
+}
+
+model TagsOnTodos {
+  tag       Tag       @relation(fields: [tagId], references: [id])
+  tagId     Int
+  todo      Todo      @relation(fields: [todoId], references: [id])
+  todoId    Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@id([tagId, todoId])
+}
+
+model Milestone {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  startDate   DateTime?
+  endDate     DateTime
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  todos       Todo[]
+}
+
+model Flux1 {
+  id          Int       @id @default(autoincrement())
+  article     Int
+  position    Int
+  nature      TypeFlux1
+  length      Int
+  required    Boolean   @default(false)
+  label       String?
+  description String?
+  a           Boolean?
+  c           Boolean?
+  db_column   String?
+  comment     String?
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Priority {
+  NORMAL
+  HIGH
+}
+
+enum TypeFlux1 {
+  STRING
+  INT
+}
