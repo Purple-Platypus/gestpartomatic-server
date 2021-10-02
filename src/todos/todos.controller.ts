@@ -68,6 +68,16 @@ export class TodosController {
     return updatedTodo;
   }
 
+  // Modification d'une liste de todos
+  @Patch()
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Modification d'une liste de todos" })
+  async patchMany(@Body() todosData: UpdateTodoDto[]): Promise<void> {
+    return this.todosService.updateMany(todosData);
+  }
+
   // Suppression d'un todo
   @Delete(':id')
   @HttpCode(204)
