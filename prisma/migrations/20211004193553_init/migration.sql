@@ -83,6 +83,7 @@ CREATE TABLE "Todo" (
     "description" TEXT,
     "deadline" TIMESTAMP(3),
     "priority" "Priority" NOT NULL DEFAULT E'NORMAL',
+    "isDone" BOOLEAN NOT NULL DEFAULT false,
     "isPrivate" BOOLEAN NOT NULL DEFAULT false,
     "isArchived" BOOLEAN NOT NULL DEFAULT false,
     "listId" INTEGER,

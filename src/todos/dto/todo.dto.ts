@@ -45,6 +45,14 @@ export class TodoDto {
   deadline?: Date;
 
   /**
+   * Etat réalisé du todo
+   * @example false
+   */
+  @ApiProperty()
+  @IsOptional()
+  isDone?: boolean;
+
+  /**
    * Etat archivé du todo
    * @example false
    */
