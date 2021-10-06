@@ -10,6 +10,7 @@ import { TodosController } from './todos/todos.controller';
 import { TodosModule } from './todos/todos.module';
 import { Flux1Module } from './flux1/flux1.module';
 import { BoardsModule } from './boards/boards.module';
+import { ListsModule } from './lists/lists.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { BoardsModule } from './boards/boards.module';
     TodosModule,
     Flux1Module,
     BoardsModule,
+    ListsModule,
   ],
   providers: [MailService],
   controllers: [TodosController],

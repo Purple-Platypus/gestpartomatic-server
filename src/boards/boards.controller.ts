@@ -1,3 +1,4 @@
+import { User } from '.prisma/client';
 import {
   Controller,
   Get,
@@ -9,6 +10,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import JwtAuthGuard from 'src/auth/guards/jwtAuth.guard';
@@ -28,8 +30,8 @@ export class BoardsController {
   @ApiOperation({
     summary: `Création d'un kanban`,
   })
-  create(@Body() createBoardDto: CreateBoardDto) {
-    return this.boardsService.create(createBoardDto);
+  create(@Req() req: User, @Body() createBoardData: CreateBoardDto) {
+    return this.boardsService.create(req['user'].id, createBoardData);
   }
 
   // @Get()

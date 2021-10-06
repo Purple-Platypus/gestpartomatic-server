@@ -166,11 +166,6 @@ model Flux1 {
   comment     String?
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
 enum Progression {
   TODO
   IN_PROGRESS
