@@ -4,48 +4,48 @@ import { IsOptional } from 'class-validator';
 
 export class BoardDto {
   /**
-   * ID unique du todo
+   * ID unique du tableau
    * @example 1
    */
   @ApiProperty()
   id: number;
 
   /**
-   * Titre du todo
-   * @example Acheter du lait
+   * Titre du tableau
+   * @example Projet Z
    */
   @ApiProperty()
   name: string;
 
   /**
-   * Description du todo
-   * @example Ne pas oublier les cookies
+   * Description du tableau
+   * @example Take on the world !
    */
   @ApiProperty()
   @IsOptional()
   description?: string;
 
   /**
-   * Etat réalisé du todo
-   * @example false
+   * Etat privé du tableau
+   * @example true
    */
   @ApiProperty()
   isPrivate: boolean;
 
   /**
-   * Créateur du todo
+   * Créateur du tableau
    */
   @ApiProperty()
   creator: User;
 
   /**
-   * Utilisateurs assignés au todo
+   * Utilisateurs ayant accès au tableau
    */
   @ApiProperty()
   watchers?: User[];
 
   /**
-   * Utilisateurs assignés au todo
+   * Colonnes du tableau
    */
   @ApiProperty()
   lists: List[];
