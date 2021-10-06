@@ -11,71 +11,61 @@ generator client {
 }
 
 model User {
-  id              String         @id @default(uuid())
-  email           String         @unique
-  username        String         @unique
+  id              String          @id @default(uuid())
+  email           String          @unique
+  username        String          @unique
   nickname        String?
   avatar          String
   password        String
-  settingDarkMode Boolean        @default(false)
+  settingDarkMode Boolean         @default(false)
   refreshToken    String?
-  teams           TeamsOnUsers[]
   createdTodos    Todo[]
   assignedTodos   UsersOnTodos[]
+  createdBoards   Board[]
+  watchedBoards   UsersOnBoards[]
   comments        Comment[]
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
   deletedAt       DateTime?
 }
 
-model Team {
-  id          Int            @id @default(autoincrement())
-  name        String         @unique
-  description String?
-  image       String
-  users       TeamsOnUsers[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  deletedAt   DateTime?
-  boards      Board[]
-  Tags        Tag[]
-}
-
-model TeamsOnUsers {
-  user      User      @relation(fields: [userId], references: [id])
-  userId    String
-  team      Team      @relation(fields: [teamId], references: [id])
-  teamId    Int
-  role      Role      @default(USER)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  @@id([userId, teamId])
-}
-
 model Board {
-  id          Int       @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   name        String
   description String?
-  team        Team      @relation(fields: [teamId], references: [id])
-  teamId      Int
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  isPrivate   Boolean         @default(true)
+  creator     User            @relation(fields: [creatorId], references: [id])
+  creatorId   String
+  watchers    UsersOnBoards[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
   deletedAt   DateTime?
   lists       List[]
 }
 
-model List {
-  id        Int       @id @default(autoincrement())
-  name      String
-  rank      Int
+model UsersOnBoards {
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
   board     Board     @relation(fields: [boardId], references: [id])
   boardId   Int
-  todos     Todo[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  @@id([userId, boardId])
+}
+
+model List {
+  id          Int         @id @default(autoincrement())
+  name        String
+  rank        Int
+  progression Progression @default(TODO)
+  board       Board       @relation(fields: [boardId], references: [id])
+  boardId     Int
+  todos       Todo[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  deletedAt   DateTime?
 }
 
 model Todo {
@@ -86,7 +76,7 @@ model Todo {
   milestone   Milestone?     @relation(fields: [milestoneId], references: [id])
   deadline    DateTime?
   priority    Priority       @default(NORMAL)
-  isDone  Boolean        @default(false)
+  isDone      Boolean        @default(false)
   isPrivate   Boolean        @default(false)
   isArchived  Boolean        @default(false)
   list        List?          @relation(fields: [listId], references: [id])
@@ -131,8 +121,6 @@ model Tag {
   id        Int           @id @default(autoincrement())
   label     String
   color     Int
-  team      Team          @relation(fields: [teamId], references: [id])
-  teamId    Int
   todos     TagsOnTodos[]
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
@@ -181,6 +169,12 @@ model Flux1 {
 enum Role {
   USER
   ADMIN
+}
+
+enum Progression {
+  TODO
+  IN_PROGRESS
+  DONE
 }
 
 enum Priority {
