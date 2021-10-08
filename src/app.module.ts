@@ -5,7 +5,6 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { MailModule } from './mails/mail.module';
 import { MailService } from './mails/mail.service';
-import { TeamsModule } from './teams/teams.module';
 import { TodosController } from './todos/todos.controller';
 import { TodosModule } from './todos/todos.module';
 import { Flux1Module } from './flux1/flux1.module';
@@ -19,7 +18,6 @@ import { ListsModule } from './lists/lists.module';
     UsersModule,
     AuthModule,
     MailModule,
-    TeamsModule,
     TodosModule,
     Flux1Module,
     BoardsModule,
