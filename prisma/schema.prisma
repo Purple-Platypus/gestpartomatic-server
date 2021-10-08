@@ -75,7 +75,7 @@ model Todo {
   description String?
   milestone   Milestone?     @relation(fields: [milestoneId], references: [id])
   deadline    DateTime?
-  priority    Priority       @default(NORMAL)
+  priority    Priority?      @default(NORMAL)
   isDone      Boolean        @default(false)
   isPrivate   Boolean        @default(false)
   isArchived  Boolean        @default(false)

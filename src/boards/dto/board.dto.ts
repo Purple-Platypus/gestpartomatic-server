@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { List, User } from '@prisma/client';
-import { IsOptional } from 'class-validator';
+import { IsDefined, IsOptional } from 'class-validator';
 
 export class BoardDto {
   /**
@@ -15,6 +15,7 @@ export class BoardDto {
    * @example Projet Z
    */
   @ApiProperty()
+  @IsDefined()
   name: string;
 
   /**
@@ -30,12 +31,14 @@ export class BoardDto {
    * @example true
    */
   @ApiProperty()
+  @IsOptional()
   isPrivate: boolean;
 
   /**
    * Créateur du tableau
    */
   @ApiProperty()
+  @IsOptional()
   creator: User;
 
   /**

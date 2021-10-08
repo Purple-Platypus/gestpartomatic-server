@@ -60,9 +60,9 @@ export class TodoDto {
    * @example NORMAL
    */
   @ApiProperty()
-  @IsDefined()
+  @IsOptional()
   @IsEnum(Priority)
-  priority: 'NORMAL' | 'HIGH';
+  priority?: 'NORMAL' | 'HIGH';
 
   /**
    * Etat réalisé du todo
