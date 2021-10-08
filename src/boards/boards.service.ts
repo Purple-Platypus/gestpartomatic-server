@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import BoardDto from './dto/board.dto';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 
@@ -7,7 +8,10 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 export class BoardsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(userId: string, createBoardData: CreateBoardDto) {
+  async create(
+    userId: string,
+    createBoardData: CreateBoardDto,
+  ): Promise<BoardDto> {
     try {
       const createdBoard = await this.prisma.board.create({
         data: {
@@ -53,9 +57,30 @@ export class BoardsService {
     }
   }
 
-  // findAll() {
-  //   return `This action returns all boards`;
-  // }
+  async findAll(userId: string): Promise<BoardDto[]> {
+    const selectParams = {
+      select: {
+        id: true,
+        name: true,
+      },
+      where: {
+        OR: [
+          { creatorId: userId },
+          { isPrivate: false },
+          {
+            watchers: {
+              some: {
+                userId: userId,
+              },
+            },
+          },
+        ],
+      },
+    };
+
+    const userBoards = await this.prisma.board.findMany(selectParams);
+    return userBoards;
+  }
 
   // findOne(id: number) {
   //   return `This action returns a #${id} board`;

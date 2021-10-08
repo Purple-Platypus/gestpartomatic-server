@@ -32,26 +32,28 @@ export class BoardDto {
    */
   @ApiProperty()
   @IsOptional()
-  isPrivate: boolean;
+  isPrivate?: boolean;
 
   /**
    * Créateur du tableau
    */
   @ApiProperty()
   @IsOptional()
-  creator: User;
+  creator?: User;
 
   /**
    * Utilisateurs ayant accès au tableau
    */
   @ApiProperty()
+  @IsOptional()
   watchers?: User[];
 
   /**
    * Colonnes du tableau
    */
   @ApiProperty()
-  lists: List[];
+  @IsOptional()
+  lists?: List[];
 }
 
 export default BoardDto;
