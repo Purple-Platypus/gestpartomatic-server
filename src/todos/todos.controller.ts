@@ -62,9 +62,7 @@ export class TodosController {
     @Param('id') todoId: string,
     @Body() todoData: UpdateTodoDto,
   ): Promise<Todo> {
-    const parsedTodoId = parseInt(todoId);
-
-    const updatedTodo = this.todosService.update(parsedTodoId, todoData);
+    const updatedTodo = this.todosService.update(+todoId, todoData);
     return updatedTodo;
   }
 
@@ -85,9 +83,7 @@ export class TodosController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Suppression d'un todo" })
   async delete(@Param('id') todoId: string): Promise<void> {
-    const parsedTodoId = parseInt(todoId);
-
-    this.todosService.delete(parsedTodoId);
+    this.todosService.delete(+todoId);
     return;
   }
 }
