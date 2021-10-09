@@ -32,17 +32,16 @@ export class UsersController {
   @Get('me')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiQuery({ name: 'withTeams', required: false, enum: ['true', 'false'] })
   @ApiQuery({ name: 'withBoards', required: false, enum: ['true', 'false'] })
   @ApiOperation({
     summary: "Lecture de l'utilisateur connecté",
   })
   async getProfile(
     @Req() req: User,
-    @Query('withTeamsAndBoards') withTeamsAndBoards: string,
+    @Query('withBoards') withBoards: string,
   ): Promise<UserDto> {
     const params = {
-      getTeamsAndBoards: withTeamsAndBoards === 'true',
+      getBoards: withBoards === 'true',
     };
 
     const user = await this.usersService.getById(req['user'].id, params);

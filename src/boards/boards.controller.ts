@@ -11,8 +11,14 @@ import {
   ClassSerializerInterceptor,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import JwtAuthGuard from 'src/auth/guards/jwtAuth.guard';
 import { BoardsService } from './boards.service';
 import BoardDto from './dto/board.dto';
@@ -48,10 +54,17 @@ export class BoardsController {
     return this.boardsService.findAll(req['user'].id);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.boardsService.findOne(+id);
-  // }
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiQuery({ name: 'deep', required: false, enum: ['true', 'false'] })
+  @ApiOperation({
+    summary: `Récupération d'un' kanban par id`,
+  })
+  findOne(@Query('deep') deep: string, @Param('id') boardId: string) {
+    const deepSearch = deep === 'true';
+    return this.boardsService.findOne(+boardId, deepSearch);
+  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateBoardDto: UpdateBoardDto) {

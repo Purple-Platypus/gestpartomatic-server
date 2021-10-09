@@ -101,28 +101,6 @@ export class UsersService {
       },
     };
 
-    // Ajout conditionnel des boards
-    if (params && params.getTeamsAndBoards) {
-      selectParams.select['teams'] = {
-        select: {
-          role: true,
-          team: {
-            select: {
-              id: true,
-              name: true,
-              description: true,
-              boards: {
-                select: {
-                  id: true,
-                  name: true,
-                },
-              },
-            },
-          },
-        },
-      };
-    }
-
     // Ajout conditionnel du refresh token
     if (params && params.getRefreshToken) {
       selectParams.select['refreshToken'] = true;

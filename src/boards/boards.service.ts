@@ -62,6 +62,7 @@ export class BoardsService {
       select: {
         id: true,
         name: true,
+        isPrivate: true,
       },
       where: {
         OR: [
@@ -82,9 +83,31 @@ export class BoardsService {
     return userBoards;
   }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} board`;
-  // }
+  async findOne(boardId: number, deepSearch: boolean): Promise<BoardDto> {
+    const selectParams = {
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        isPrivate: true,
+      },
+      where: {
+        id: boardId,
+      },
+    };
+
+    if (deepSearch) {
+      selectParams.select['lists'] = {
+        include: {
+          todos: true,
+        },
+      };
+    }
+
+    const board = await this.prisma.board.findUnique(selectParams);
+
+    return board;
+  }
 
   // update(id: number, updateBoardDto: UpdateBoardDto) {
   //   return `This action updates a #${id} board`;
