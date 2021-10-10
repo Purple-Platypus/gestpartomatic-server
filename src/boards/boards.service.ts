@@ -116,4 +116,32 @@ export class BoardsService {
   // remove(id: number) {
   //   return `This action removes a #${id} board`;
   // }
+
+  async checkUserAccess(userId: string, boardId: number): Promise<boolean> {
+    const matchingBoardId = await this.prisma.board.findFirst({
+      select: {
+        id: true,
+      },
+      where: {
+        AND: [
+          { id: boardId },
+          {
+            OR: [
+              { creatorId: userId },
+              { isPrivate: false },
+              {
+                guests: {
+                  some: {
+                    userId: userId,
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    return matchingBoardId !== null;
+  }
 }

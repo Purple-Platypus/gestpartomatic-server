@@ -24,6 +24,7 @@ import { BoardsService } from './boards.service';
 import BoardDto from './dto/board.dto';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
+import { BoardVisibilityGuard } from './guards/boardVisibility.guard';
 
 @ApiTags('boards')
 @Controller('boards')
@@ -55,7 +56,7 @@ export class BoardsController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, BoardVisibilityGuard)
   @ApiBearerAuth()
   @ApiQuery({ name: 'deep', required: false, enum: ['true', 'false'] })
   @ApiOperation({
