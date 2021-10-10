@@ -36,7 +36,7 @@ model Board {
   isPrivate   Boolean?        @default(true)
   creator     User            @relation(fields: [creatorId], references: [id])
   creatorId   String
-  watchers    UsersOnBoards[]
+  guests      UsersOnBoards[]
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
   deletedAt   DateTime?

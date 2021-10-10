@@ -46,7 +46,7 @@ export class BoardDto {
    */
   @ApiProperty()
   @IsOptional()
-  watchers?: User[];
+  guests?: User[];
 
   /**
    * Colonnes du tableau

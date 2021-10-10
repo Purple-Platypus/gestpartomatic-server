@@ -69,7 +69,7 @@ export class BoardsService {
           { creatorId: userId },
           { isPrivate: false },
           {
-            watchers: {
+            guests: {
               some: {
                 userId: userId,
               },
