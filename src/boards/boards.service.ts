@@ -38,6 +38,7 @@ export class BoardsService {
                       },
                       rank: 0,
                       description: `Partagez vos tableaux en invitant de nouveaux utilisateurs.`,
+                      isPrivate: false,
                     },
                   ],
                 },
