@@ -35,6 +35,14 @@ export class BoardDto {
   isPrivate?: boolean;
 
   /**
+   * Etat archivé du tableau
+   * @example true
+   */
+  @ApiProperty()
+  @IsOptional()
+  isArchived?: boolean;
+
+  /**
    * Créateur du tableau
    */
   @ApiProperty()

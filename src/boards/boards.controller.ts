@@ -24,6 +24,7 @@ import { BoardsService } from './boards.service';
 import BoardDto from './dto/board.dto';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
+import { BoardCreatorGuard } from './guards/boardCreator.guard';
 import { BoardVisibilityGuard } from './guards/boardVisibility.guard';
 
 @ApiTags('boards')
@@ -67,13 +68,23 @@ export class BoardsController {
     return this.boardsService.findOne(+boardId, deepSearch);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateBoardDto: UpdateBoardDto) {
-  //   return this.boardsService.update(+id, updateBoardDto);
-  // }
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard, BoardCreatorGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: `Modification d'un board`,
+  })
+  update(@Param('id') id: string, @Body() updateBoardData: UpdateBoardDto) {
+    return this.boardsService.update(+id, updateBoardData);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.boardsService.remove(+id);
-  // }
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, BoardCreatorGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: `Suppression d'un board`,
+  })
+  remove(@Param('id') id: string) {
+    return this.boardsService.remove(+id);
+  }
 }

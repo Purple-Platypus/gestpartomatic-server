@@ -64,6 +64,8 @@ export class BoardsService {
         id: true,
         name: true,
         isPrivate: true,
+        creatorId: true,
+        isArchived: true,
       },
       where: {
         OR: [
@@ -110,13 +112,37 @@ export class BoardsService {
     return board;
   }
 
-  // update(id: number, updateBoardDto: UpdateBoardDto) {
-  //   return `This action updates a #${id} board`;
-  // }
+  async update(
+    boardId: number,
+    updateBoardData: UpdateBoardDto,
+  ): Promise<BoardDto> {
+    const updatedBoard = await this.prisma.board.update({
+      where: {
+        id: boardId,
+      },
+      data: updateBoardData,
+    });
+    return updatedBoard;
+  }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} board`;
-  // }
+  async remove(boardId: number) {
+    await this.prisma.board.delete({
+      where: { id: boardId },
+    });
+  }
+
+  async checkCreator(userId: string, boardId: number): Promise<boolean> {
+    const matchingBoardId = await this.prisma.board.findFirst({
+      select: {
+        id: true,
+      },
+      where: {
+        AND: [{ id: boardId }, { creatorId: userId }],
+      },
+    });
+
+    return matchingBoardId !== null;
+  }
 
   async checkUserAccess(userId: string, boardId: number): Promise<boolean> {
     const matchingBoardId = await this.prisma.board.findFirst({
