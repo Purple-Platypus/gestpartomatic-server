@@ -18,7 +18,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import JwtAuthGuard from 'src/auth/guards/jwtAuth.guard';
 import { User } from '.prisma/client';
 
-@ApiTags('boards')
+@ApiTags('lists')
 @Controller('lists')
 @UseInterceptors(ClassSerializerInterceptor)
 export class ListsController {
@@ -30,8 +30,8 @@ export class ListsController {
   @ApiOperation({
     summary: `Création d'une liste`,
   })
-  create(@Req() req: User, @Body() createListData: CreateListDto) {
-    return this.listsService.create(req['user'].id, createListData);
+  create(@Body() createListData: CreateListDto) {
+    return this.listsService.create(createListData);
   }
 
   // @Get()
