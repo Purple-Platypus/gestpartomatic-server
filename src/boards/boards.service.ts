@@ -63,6 +63,7 @@ export class BoardsService {
       select: {
         id: true,
         name: true,
+        description: true,
         isPrivate: true,
         creatorId: true,
         isArchived: true,
