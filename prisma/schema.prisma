@@ -26,7 +26,6 @@ model User {
   comments        Comment[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
-  deletedAt       DateTime?
 }
 
 model Board {
@@ -40,18 +39,16 @@ model Board {
   guests      UsersOnBoards[]
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
-  deletedAt   DateTime?
   lists       List[]
 }
 
 model UsersOnBoards {
-  user      User      @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   userId    String
-  board     Board     @relation(fields: [boardId], references: [id])
+  board     Board    @relation(fields: [boardId], references: [id])
   boardId   Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([userId, boardId])
 }
@@ -61,12 +58,11 @@ model List {
   name        String
   rank        Int
   progression Progression @default(TODO)
-  board       Board       @relation(fields: [boardId], references: [id])
+  board       Board       @relation(fields: [boardId], references: [id], onDelete: Cascade)
   boardId     Int
   todos       Todo[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  deletedAt   DateTime?
 }
 
 model Todo {
@@ -89,33 +85,30 @@ model Todo {
   comments    Comment[]
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
-  deletedAt   DateTime?
   milestoneId Int?
 }
 
 model UsersOnTodos {
-  user      User      @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   userId    String
-  todo      Todo      @relation(fields: [todoId], references: [id])
+  todo      Todo     @relation(fields: [todoId], references: [id])
   todoId    Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([userId, todoId])
 }
 
 model Comment {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   comment   String
-  todo      Todo      @relation(fields: [todoId], references: [id])
+  todo      Todo     @relation(fields: [todoId], references: [id])
   todoId    Int
-  user      User      @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   userId    String
   rank      Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Tag {
@@ -125,17 +118,15 @@ model Tag {
   todos     TagsOnTodos[]
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
-  deletedAt DateTime?
 }
 
 model TagsOnTodos {
-  tag       Tag       @relation(fields: [tagId], references: [id])
+  tag       Tag      @relation(fields: [tagId], references: [id])
   tagId     Int
-  todo      Todo      @relation(fields: [todoId], references: [id])
+  todo      Todo     @relation(fields: [todoId], references: [id])
   todoId    Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([tagId, todoId])
 }
@@ -148,7 +139,6 @@ model Milestone {
   endDate     DateTime
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
   todos       Todo[]
 }
 
