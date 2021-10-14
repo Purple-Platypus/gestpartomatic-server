@@ -38,7 +38,9 @@ export class ListsService {
   //   return `This action updates a #${id} list`;
   // }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} list`;
-  // }
+  async remove(listId: number) {
+    await this.prisma.list.delete({
+      where: { id: listId },
+    });
+  }
 }

@@ -17,6 +17,7 @@ import { UpdateListDto } from './dto/update-list.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import JwtAuthGuard from 'src/auth/guards/jwtAuth.guard';
 import { User } from '.prisma/client';
+import { BoardCreatorGuard } from 'src/boards/guards/boardCreator.guard';
 
 @ApiTags('lists')
 @Controller('lists')
@@ -49,8 +50,13 @@ export class ListsController {
   //   return this.listsService.update(+id, updateListDto);
   // }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.listsService.remove(+id);
-  // }
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: `Suppression d'une liste`,
+  })
+  remove(@Param('id') id: string) {
+    return this.listsService.remove(+id);
+  }
 }
