@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Todo } from '@prisma/client';
-import { IsDefined, IsEnum } from 'class-validator';
+import { IsDefined, IsEnum, IsOptional } from 'class-validator';
 
 enum Progression {
   TODO = 'TODO',
@@ -45,14 +45,15 @@ export class ListDto {
    * Tableau dans lequel la liste est affichée
    */
   @ApiProperty()
-  @IsDefined()
-  boardId: number;
+  @IsOptional()
+  boardId?: number;
 
   /**
    * Utilisateurs ayant accès au tableau
    */
   @ApiProperty()
-  todos: Todo[];
+  @IsOptional()
+  todos?: Todo[];
 }
 
 export default ListDto;

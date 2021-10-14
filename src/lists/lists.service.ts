@@ -34,9 +34,24 @@ export class ListsService {
   //   return `This action returns a #${id} list`;
   // }
 
-  // update(id: number, updateListDto: UpdateListDto) {
-  //   return `This action updates a #${id} list`;
-  // }
+  async update(
+    listId: number,
+    updateListData: UpdateListDto,
+  ): Promise<ListDto> {
+    const updatedList = await this.prisma.list.update({
+      where: {
+        id: listId,
+      },
+      data: updateListData,
+      select: {
+        id: true,
+        name: true,
+        progression: true,
+        rank: true,
+      },
+    });
+    return updatedList;
+  }
 
   async remove(listId: number) {
     await this.prisma.list.delete({

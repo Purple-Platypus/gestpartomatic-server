@@ -45,10 +45,15 @@ export class ListsController {
   //   return this.listsService.findOne(+id);
   // }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateListDto: UpdateListDto) {
-  //   return this.listsService.update(+id, updateListDto);
-  // }
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: `Modification d'une liste`,
+  })
+  update(@Param('id') id: string, @Body() updateListDto: UpdateListDto) {
+    return this.listsService.update(+id, updateListDto);
+  }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
