@@ -39,6 +39,7 @@ export class TodosService {
       },
       where: {
         authorId: userId,
+        isPrivate: true,
       },
     };
 
