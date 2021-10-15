@@ -29,8 +29,8 @@ export class ListDto {
    * @example Travaux lancés et pas tout à fait terminés
    */
   @ApiProperty()
-  @IsDefined()
-  rank: number;
+  @IsOptional()
+  rank?: number;
 
   /**
    * Niveau de progression associé au tableau tableau
