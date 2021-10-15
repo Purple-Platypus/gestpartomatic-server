@@ -61,7 +61,6 @@ export class TodosService {
   public async updateMany(todosData: UpdateTodoDto[]): Promise<void> {
     for (const updatedItem of todosData) {
       const { id, ...data } = updatedItem;
-      console.log(id, data);
 
       await this.prisma.todo.update({
         where: {

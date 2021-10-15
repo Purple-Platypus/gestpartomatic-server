@@ -10,6 +10,7 @@ import {
   ClassSerializerInterceptor,
   UseGuards,
   Req,
+  HttpCode,
 } from '@nestjs/common';
 import { ListsService } from './lists.service';
 import { CreateListDto } from './dto/create-list.dto';
@@ -53,6 +54,16 @@ export class ListsController {
   })
   update(@Param('id') id: string, @Body() updateListDto: UpdateListDto) {
     return this.listsService.update(+id, updateListDto);
+  }
+
+  // Modification d'une liste de lists
+  @Patch()
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Modification d'une liste de lists" })
+  async patchMany(@Body() listsData: UpdateListDto[]): Promise<void> {
+    return this.listsService.updateMany(listsData);
   }
 
   @Delete(':id')

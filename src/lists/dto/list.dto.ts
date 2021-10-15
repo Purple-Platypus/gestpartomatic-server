@@ -33,8 +33,8 @@ export class ListDto {
   rank: number;
 
   /**
-   * Etat privé du tableau
-   * @example true
+   * Niveau de progression associé au tableau tableau
+   * @example IN_PROGRESS
    */
   @ApiProperty()
   @IsDefined()

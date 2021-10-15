@@ -1,4 +1,9 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateListDto } from './create-list.dto';
+import { PickType } from '@nestjs/swagger';
+import ListDto from './list.dto';
 
-export class UpdateListDto extends PartialType(CreateListDto) {}
+export class UpdateListDto extends PickType(ListDto, [
+  'id',
+  'name',
+  'rank',
+  'progression',
+] as const) {}
