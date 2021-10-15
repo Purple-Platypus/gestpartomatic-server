@@ -61,7 +61,7 @@ export class TodosController {
   async patch(
     @Param('id') todoId: string,
     @Body() todoData: UpdateTodoDto,
-  ): Promise<Todo> {
+  ): Promise<TodoDto> {
     const updatedTodo = this.todosService.update(+todoId, todoData);
     return updatedTodo;
   }

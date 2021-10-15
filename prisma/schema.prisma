@@ -23,7 +23,7 @@ model User {
   assignedTodos   UsersOnTodos[]
   createdBoards   Board[]
   watchedBoards   UsersOnBoards[]
-  comments        Comment[]
+  // comments        Comment[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 }
@@ -66,26 +66,27 @@ model List {
 }
 
 model Todo {
-  id          Int            @id @default(autoincrement())
-  rank        Int
-  title       String
-  description String?
-  milestone   Milestone?     @relation(fields: [milestoneId], references: [id])
-  deadline    DateTime?
-  priority    Priority?      @default(NORMAL)
-  isDone      Boolean        @default(false)
-  isPrivate   Boolean        @default(false)
-  isArchived  Boolean        @default(false)
-  list        List?          @relation(fields: [listId], references: [id])
-  listId      Int?
-  author      User           @relation(fields: [authorId], references: [id])
-  authorId    String
-  assignees   UsersOnTodos[]
-  tags        TagsOnTodos[]
-  comments    Comment[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  milestoneId Int?
+  id           Int            @id @default(autoincrement())
+  rank         Int
+  title        String
+  description  String?
+  // milestone   Milestone?     @relation(fields: [milestoneId], references: [id])
+  deadline     DateTime?
+  priority     Priority?      @default(NORMAL)
+  isDone       Boolean        @default(false)
+  isPrivate    Boolean        @default(false)
+  isArchived   Boolean        @default(false)
+  list         List?          @relation(fields: [listId], references: [id])
+  listId       Int?
+  author       User           @relation(fields: [authorId], references: [id])
+  authorId     String
+  // assignees   UsersOnTodos[]
+  // tags        TagsOnTodos[]
+  // comments    Comment[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  // milestoneId Int?
+  UsersOnTodos UsersOnTodos[]
 }
 
 model UsersOnTodos {
@@ -99,48 +100,48 @@ model UsersOnTodos {
   @@id([userId, todoId])
 }
 
-model Comment {
-  id        Int      @id @default(autoincrement())
-  comment   String
-  todo      Todo     @relation(fields: [todoId], references: [id])
-  todoId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  rank      Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+// model Comment {
+//   id        Int      @id @default(autoincrement())
+//   comment   String
+//   todo      Todo     @relation(fields: [todoId], references: [id])
+//   todoId    Int
+//   user      User     @relation(fields: [userId], references: [id])
+//   userId    String
+//   rank      Int
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 
-model Tag {
-  id        Int           @id @default(autoincrement())
-  label     String
-  color     Int
-  todos     TagsOnTodos[]
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-}
+// model Tag {
+//   id        Int           @id @default(autoincrement())
+//   label     String
+//   color     Int
+//   todos     TagsOnTodos[]
+//   createdAt DateTime      @default(now())
+//   updatedAt DateTime      @updatedAt
+// }
 
-model TagsOnTodos {
-  tag       Tag      @relation(fields: [tagId], references: [id])
-  tagId     Int
-  todo      Todo     @relation(fields: [todoId], references: [id])
-  todoId    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// model TagsOnTodos {
+//   tag       Tag      @relation(fields: [tagId], references: [id])
+//   tagId     Int
+//   todo      Todo     @relation(fields: [todoId], references: [id])
+//   todoId    Int
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
 
-  @@id([tagId, todoId])
-}
+//   @@id([tagId, todoId])
+// }
 
-model Milestone {
-  id          Int       @id @default(autoincrement())
-  name        String
-  description String?
-  startDate   DateTime?
-  endDate     DateTime
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  todos       Todo[]
-}
+// model Milestone {
+//   id          Int       @id @default(autoincrement())
+//   name        String
+//   description String?
+//   startDate   DateTime?
+//   endDate     DateTime
+//   createdAt   DateTime  @default(now())
+//   updatedAt   DateTime  @updatedAt
+//   todos       Todo[]
+// }
 
 model Flux1 {
   id          Int       @id @default(autoincrement())

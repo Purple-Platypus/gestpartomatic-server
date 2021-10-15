@@ -1,12 +1,17 @@
-import { PickType } from '@nestjs/swagger';
+import { PickType, PartialType } from '@nestjs/swagger';
 import TodoDto from './todo.dto';
 
-export class UpdateTodoDto extends PickType(TodoDto, [
-  'id',
-  'isArchived',
-  'title',
-  'description',
-  'deadline',
-] as const) {}
+export class UpdateTodoDto extends PartialType(
+  PickType(TodoDto, [
+    'id',
+    'rank',
+    'title',
+    'description',
+    'deadline',
+    'priority',
+    'isDone',
+    'isArchived',
+  ] as const),
+) {}
 
 export default UpdateTodoDto;

@@ -35,7 +35,6 @@ export class TodosService {
         rank: true,
         deadline: true,
         author: true,
-        tags: true,
       },
       where: {
         authorId: userId,
@@ -48,7 +47,10 @@ export class TodosService {
   }
 
   // Modification d'un todo
-  public async update(todoId: number, todoData: UpdateTodoDto): Promise<Todo> {
+  public async update(
+    todoId: number,
+    todoData: UpdateTodoDto,
+  ): Promise<TodoDto> {
     const updatedTodo = await this.prisma.todo.update({
       where: {
         id: todoId,

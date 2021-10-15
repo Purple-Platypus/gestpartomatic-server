@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { List, Milestone, TagsOnTodos, User } from '@prisma/client';
+import { List, User } from '@prisma/client';
 import { IsDefined, IsEnum, IsOptional } from 'class-validator';
 
 enum Priority {
@@ -13,8 +13,8 @@ export class TodoDto {
    * @example 1
    */
   @ApiProperty()
-  @IsOptional()
-  id?: number;
+  @IsDefined()
+  id: number;
 
   /**
    * rang du todo dans la liste
@@ -39,13 +39,6 @@ export class TodoDto {
   @ApiProperty()
   @IsOptional()
   description?: string;
-
-  /**
-   * Jalon du todo
-   */
-  @ApiProperty()
-  @IsOptional()
-  milestone?: Milestone;
 
   /**
    * Date de fin
@@ -98,25 +91,31 @@ export class TodoDto {
    * Créateur du todo
    */
   @ApiProperty()
-  author: User;
+  author?: User;
 
   /**
-   * Utilisateurs assignés au todo
+   * Id de liste à laquelle le todo est associé
    */
   @ApiProperty()
-  assignees?: User[];
+  listId?: number;
 
   /**
-   * Tags appliqués au todo
+   * Id de l'auteur du todo
    */
   @ApiProperty()
-  tags?: TagsOnTodos[];
+  authorId?: string;
 
   /**
-   * Commentaires du todo
+   * Date de création
    */
   @ApiProperty()
-  comments?: Comment[];
+  createdAt?: Date;
+
+  /**
+   * Date de modification
+   */
+  @ApiProperty()
+  updatedAt?: Date;
 }
 
 export default TodoDto;
