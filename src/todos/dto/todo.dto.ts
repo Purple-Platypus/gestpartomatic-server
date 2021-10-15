@@ -13,8 +13,8 @@ export class TodoDto {
    * @example 1
    */
   @ApiProperty()
-  @IsDefined()
-  id: number;
+  @IsOptional()
+  id?: number;
 
   /**
    * rang du todo dans la liste

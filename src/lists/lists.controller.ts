@@ -1,6 +1,5 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
   Patch,
@@ -9,7 +8,6 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   UseGuards,
-  Req,
   HttpCode,
 } from '@nestjs/common';
 import { ListsService } from './lists.service';
@@ -17,8 +15,6 @@ import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import JwtAuthGuard from 'src/auth/guards/jwtAuth.guard';
-import { User } from '.prisma/client';
-import { BoardCreatorGuard } from 'src/boards/guards/boardCreator.guard';
 
 @ApiTags('lists')
 @Controller('lists')
