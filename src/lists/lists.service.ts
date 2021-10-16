@@ -53,20 +53,6 @@ export class ListsService {
     return updatedList;
   }
 
-  // Modification d'une liste de lists
-  public async updateMany(listsData: UpdateListDto[]): Promise<void> {
-    for (const updatedItem of listsData) {
-      const { id, ...data } = updatedItem;
-
-      await this.prisma.list.update({
-        where: {
-          id: id,
-        },
-        data: data,
-      });
-    }
-  }
-
   async remove(listId: number) {
     await this.prisma.list.delete({
       where: { id: listId },
