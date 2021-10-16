@@ -60,20 +60,6 @@ export class TodosService {
     return updatedTodo;
   }
 
-  // Modification d'une liste de todos
-  public async updateMany(todosData: UpdateTodoDto[]): Promise<void> {
-    for (const updatedItem of todosData) {
-      const { id, ...data } = updatedItem;
-
-      await this.prisma.todo.update({
-        where: {
-          id: id,
-        },
-        data: data,
-      });
-    }
-  }
-
   // Suppression d'un todo
   public async delete(todoId: number): Promise<void> {
     await this.prisma.todo.delete({

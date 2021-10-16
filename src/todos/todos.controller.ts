@@ -19,6 +19,7 @@ import JwtAuthGuard from 'src/auth/guards/jwtAuth.guard';
 import { Todo, User } from '@prisma/client';
 import UpdateTodoDto from './dto/update-todo.dto';
 import CreateTodoDto from './dto/create-todo.dto';
+import UpdateMultipleTodoDto from './dto/update-multiple-todo.dto';
 
 @ApiTags('todos')
 @Controller('todos')
@@ -72,8 +73,10 @@ export class TodosController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: "Modification d'une liste de todos" })
-  async patchMany(@Body() todosData: UpdateTodoDto[]): Promise<void> {
-    return this.todosService.updateMany(todosData);
+  async patchMany(@Body() todosData: UpdateMultipleTodoDto[]): Promise<void> {
+    todosData.forEach((updatedTodo) => {
+      this.todosService.update(updatedTodo.id, updatedTodo.data);
+    });
   }
 
   // Suppression d'un todo
