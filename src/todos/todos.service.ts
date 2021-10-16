@@ -29,7 +29,7 @@ export class TodosService {
         id: true,
         title: true,
         description: true,
-        isDone: true,
+        progression: true,
         isArchived: true,
         isPrivate: true,
         rank: true,

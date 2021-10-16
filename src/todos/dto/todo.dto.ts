@@ -7,6 +7,12 @@ enum Priority {
   HIGH = 'HIGH',
 }
 
+enum Progression {
+  TODO = 'TODO',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE',
+}
+
 export class TodoDto {
   /**
    * ID unique du todo
@@ -63,7 +69,8 @@ export class TodoDto {
    */
   @ApiProperty()
   @IsOptional()
-  isDone?: boolean;
+  @IsEnum(Progression)
+  progression: 'TODO' | 'IN_PROGRESS' | 'DONE';
 
   /**
    * Etat privé du todo

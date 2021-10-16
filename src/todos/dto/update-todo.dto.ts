@@ -8,7 +8,7 @@ export class UpdateTodoDto extends PartialType(
     'description',
     'deadline',
     'priority',
-    'isDone',
+    'progression',
     'isArchived',
   ] as const),
 ) {}
