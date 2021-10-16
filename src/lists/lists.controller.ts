@@ -60,9 +60,7 @@ export class ListsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Modification d'une liste de lists" })
   async patchMany(@Body() listsData: UpdateMultipleListDto[]): Promise<void> {
-    listsData.forEach((updatedList) => {
-      this.listsService.update(updatedList.id, updatedList.data);
-    });
+    this.listsService.updateMany(listsData);
   }
 
   @Delete(':id')

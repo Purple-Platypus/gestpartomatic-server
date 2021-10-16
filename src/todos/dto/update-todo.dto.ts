@@ -3,7 +3,6 @@ import TodoDto from './todo.dto';
 
 export class UpdateTodoDto extends PartialType(
   PickType(TodoDto, [
-    'id',
     'rank',
     'title',
     'description',

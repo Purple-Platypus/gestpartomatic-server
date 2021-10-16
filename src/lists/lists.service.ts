@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateListDto } from './dto/create-list.dto';
 import ListDto from './dto/list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
+import UpdateMultipleListDto from './dto/update-multiple-list.dto';
 
 @Injectable()
 export class ListsService {
@@ -53,9 +54,33 @@ export class ListsService {
     return updatedList;
   }
 
-  async remove(listId: number) {
-    await this.prisma.list.delete({
+  async updateMany(updateData: UpdateMultipleListDto[]): Promise<void> {
+    updateData.forEach((updatedList) => {
+      this.update(updatedList.id, updatedList.data);
+    });
+  }
+
+  async remove(listId: number): Promise<void> {
+    const deletedList = await this.prisma.list.delete({
       where: { id: listId },
+      select: {
+        rank: true,
+        boardId: true,
+      },
+    });
+
+    await this.prisma.list.updateMany({
+      data: {
+        rank: {
+          decrement: 1,
+        },
+      },
+      where: {
+        AND: [
+          { rank: { gt: deletedList.rank } },
+          { boardId: deletedList.boardId },
+        ],
+      },
     });
   }
 }
