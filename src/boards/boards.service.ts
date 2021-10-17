@@ -122,6 +122,12 @@ export class BoardsService {
         id: boardId,
       },
       data: updateBoardData,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        isPrivate: true,
+      },
     });
     return updatedBoard;
   }

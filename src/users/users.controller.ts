@@ -48,6 +48,18 @@ export class UsersController {
     return user;
   }
 
+  // Récupération de la liste des utilisateurs
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Récupération de la liste des utilisateurs',
+  })
+  async getAllProfile(): Promise<UserDto[]> {
+    const users = await this.usersService.getAll();
+    return users;
+  }
+
   // Modification de l'utilisateur connecté
   @Patch('me')
   @UseGuards(JwtAuthGuard)
