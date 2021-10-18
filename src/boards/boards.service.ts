@@ -101,11 +101,18 @@ export class BoardsService {
     };
 
     if (deepSearch) {
-      selectParams.select['lists'] = {
-        include: {
-          todos: true,
+      Object.assign(selectParams.select, {
+        lists: {
+          include: {
+            todos: true,
+          },
         },
-      };
+        guests: {
+          select: {
+            userId: true,
+          },
+        },
+      });
     }
 
     const board = await this.prisma.board.findUnique(selectParams);
@@ -132,9 +139,37 @@ export class BoardsService {
     return updatedBoard;
   }
 
+  async addGuest(boardId: number, guestsList): Promise<void> {
+    await this.prisma.board.update({
+      where: {
+        id: boardId,
+      },
+      data: {
+        guests: {
+          create: {
+            user: {
+              connect: guestsList,
+            },
+          },
+        },
+      },
+    });
+  }
+
   async remove(boardId: number) {
     await this.prisma.board.delete({
       where: { id: boardId },
+    });
+  }
+
+  async removeGuest(boardId: number, userId: string): Promise<void> {
+    await this.prisma.usersOnBoards.delete({
+      where: {
+        userId_boardId: {
+          userId,
+          boardId,
+        },
+      },
     });
   }
 

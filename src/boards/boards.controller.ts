@@ -69,22 +69,48 @@ export class BoardsController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard, BoardCreatorGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
     summary: `Modification d'un board`,
   })
-  update(@Param('id') id: string, @Body() updateBoardData: UpdateBoardDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateBoardData: UpdateBoardDto,
+  ): Promise<BoardDto> {
     return this.boardsService.update(+id, updateBoardData);
   }
 
+  @Post(':id/guest')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: `Ajout d'un utilisateur de board`,
+  })
+  updateGuests(@Param('id') id: string, @Body() guestId): Promise<void> {
+    return this.boardsService.addGuest(+id, guestId);
+  }
+
   @Delete(':id')
-  @UseGuards(JwtAuthGuard, BoardCreatorGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
     summary: `Suppression d'un board`,
   })
   remove(@Param('id') id: string) {
     return this.boardsService.remove(+id);
+  }
+
+  @Delete(':boardId/guest/:userId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: `Suppression d'un utilisateur de board`,
+  })
+  removeGuest(
+    @Param('boardId') boardId: string,
+    @Param('userId') userId: string,
+  ) {
+    return this.boardsService.removeGuest(+boardId, userId);
   }
 }
