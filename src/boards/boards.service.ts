@@ -47,6 +47,14 @@ export class BoardsService {
               { name: 'Terminé', rank: 2 },
             ],
           },
+          guests: {
+            create: {
+              user: {
+                connect: { id: userId },
+              },
+              role: 'ADMIN',
+            },
+          },
         },
       });
 
