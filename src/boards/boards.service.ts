@@ -109,7 +109,15 @@ export class BoardsService {
         },
         guests: {
           select: {
-            userId: true,
+            role: true,
+            user: {
+              select: {
+                id: true,
+                username: true,
+                nickname: true,
+                avatar: true,
+              },
+            },
           },
         },
       });
@@ -139,21 +147,43 @@ export class BoardsService {
     return updatedBoard;
   }
 
-  async addGuest(boardId: number, guestsList): Promise<void> {
-    await this.prisma.board.update({
+  async updateGuest(
+    boardId: number,
+    userId: string,
+    updateGuestData,
+  ): Promise<void> {
+    await this.prisma.usersOnBoards.update({
       where: {
-        id: boardId,
+        userId_boardId: {
+          userId,
+          boardId,
+        },
       },
+      data: updateGuestData,
+    });
+  }
+
+  async createGuest(boardId: number, userId: string, role): Promise<any> {
+    const createdGuest = await this.prisma.usersOnBoards.create({
       data: {
-        guests: {
-          create: {
-            user: {
-              connect: guestsList,
-            },
+        role,
+        userId,
+        boardId,
+      },
+      select: {
+        role: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            nickname: true,
+            avatar: true,
           },
         },
       },
     });
+
+    return createdGuest;
   }
 
   async remove(boardId: number) {

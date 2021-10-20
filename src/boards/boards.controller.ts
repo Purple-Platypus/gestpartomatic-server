@@ -46,6 +46,19 @@ export class BoardsController {
     return this.boardsService.create(req['user'].id, createBoardData);
   }
 
+  @Post(':id/guest')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: `Ajout d'un utilisateur de board`,
+  })
+  createGuests(
+    @Param('id') id: string,
+    @Body() { userId, role },
+  ): Promise<any> {
+    return this.boardsService.createGuest(+id, userId, role);
+  }
+
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -81,14 +94,18 @@ export class BoardsController {
     return this.boardsService.update(+id, updateBoardData);
   }
 
-  @Post(':id/guest')
+  @Patch(':boardId/guest/:userId')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
-    summary: `Ajout d'un utilisateur de board`,
+    summary: `Modification d'un guest`,
   })
-  updateGuests(@Param('id') id: string, @Body() guestId): Promise<void> {
-    return this.boardsService.addGuest(+id, guestId);
+  updateGuest(
+    @Param('boardId') boardId: string,
+    @Param('userId') userId: string,
+    @Body() updateGuestData: UpdateBoardDto,
+  ): Promise<void> {
+    return this.boardsService.updateGuest(+boardId, userId, updateGuestData);
   }
 
   @Delete(':id')

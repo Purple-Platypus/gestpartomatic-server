@@ -5,6 +5,7 @@ import CreateUserDto from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import UpdateUserDto from './dto/update-user.dto';
 import UserDto from './dto/user.dto';
+import PartialUserDto from './dto/partial-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -131,14 +132,13 @@ export class UsersService {
     }
   }
 
-  async getAll(): Promise<UserDto[]> {
+  async getAll(): Promise<PartialUserDto[]> {
     const users = await this.prisma.user.findMany({
       select: {
         id: true,
         username: true,
         nickname: true,
         avatar: true,
-        email: true,
       },
     });
     return users;

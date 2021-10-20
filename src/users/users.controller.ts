@@ -18,6 +18,7 @@ import {
 import { User } from '@prisma/client';
 import JwtAuthGuard from 'src/auth/guards/jwtAuth.guard';
 import RequestWithUser from 'src/auth/interfaces/requestWithUser.interface';
+import PartialUserDto from './dto/partial-user.dto';
 import UpdateUserDto from './dto/update-user.dto';
 import UserDto from './dto/user.dto';
 import { UsersService } from './users.service';
@@ -55,7 +56,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Récupération de la liste des utilisateurs',
   })
-  async getAllProfile(): Promise<UserDto[]> {
+  async getAllProfile(): Promise<PartialUserDto[]> {
     const users = await this.usersService.getAll();
     return users;
   }

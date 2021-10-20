@@ -47,6 +47,7 @@ model UsersOnBoards {
   userId    String
   board     Board    @relation(fields: [boardId], references: [id])
   boardId   Int
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -172,4 +173,9 @@ enum Priority {
 enum TypeFlux1 {
   STRING
   INT
+}
+
+enum Role {
+  USER
+  ADMIN
 }
