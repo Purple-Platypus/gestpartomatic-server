@@ -67,27 +67,26 @@ model List {
 }
 
 model Todo {
-  id           Int            @id @default(autoincrement())
-  rank         Int
-  title        String
-  description  String?
+  id          Int            @id @default(autoincrement())
+  rank        Int
+  title       String
+  description String?
   // milestone   Milestone?     @relation(fields: [milestoneId], references: [id])
-  deadline     DateTime?
-  priority     Priority       @default(NORMAL)
-  progression  Progression    @default(TODO)
-  isPrivate    Boolean        @default(false)
-  isArchived   Boolean        @default(false)
-  list         List?          @relation(fields: [listId], references: [id])
-  listId       Int?
-  author       User           @relation(fields: [authorId], references: [id])
-  authorId     String
-  // assignees   UsersOnTodos[]
-  // tags        TagsOnTodos[]
+  deadline    DateTime?
+  priority    Priority       @default(NORMAL)
+  progression Progression    @default(TODO)
+  isPrivate   Boolean        @default(false)
+  isArchived  Boolean        @default(false)
+  list        List?          @relation(fields: [listId], references: [id])
+  listId      Int?
+  author      User           @relation(fields: [authorId], references: [id])
+  authorId    String
+  assignees   UsersOnTodos[]
+  tags        TagsOnTodos[]
   // comments    Comment[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
   // milestoneId Int?
-  UsersOnTodos UsersOnTodos[]
 }
 
 model UsersOnTodos {
@@ -113,25 +112,25 @@ model UsersOnTodos {
 //   updatedAt DateTime @updatedAt
 // }
 
-// model Tag {
-//   id        Int           @id @default(autoincrement())
-//   label     String
-//   color     Int
-//   todos     TagsOnTodos[]
-//   createdAt DateTime      @default(now())
-//   updatedAt DateTime      @updatedAt
-// }
+model Tag {
+  id        Int           @id @default(autoincrement())
+  label     String
+  color     Int
+  todos     TagsOnTodos[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
 
-// model TagsOnTodos {
-//   tag       Tag      @relation(fields: [tagId], references: [id])
-//   tagId     Int
-//   todo      Todo     @relation(fields: [todoId], references: [id])
-//   todoId    Int
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
+model TagsOnTodos {
+  tag       Tag      @relation(fields: [tagId], references: [id])
+  tagId     Int
+  todo      Todo     @relation(fields: [todoId], references: [id])
+  todoId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-//   @@id([tagId, todoId])
-// }
+  @@id([tagId, todoId])
+}
 
 // model Milestone {
 //   id          Int       @id @default(autoincrement())
