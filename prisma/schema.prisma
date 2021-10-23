@@ -115,7 +115,7 @@ model UsersOnTodos {
 model Tag {
   id        Int           @id @default(autoincrement())
   label     String
-  color     Int
+  color     String
   todos     TagsOnTodos[]
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt

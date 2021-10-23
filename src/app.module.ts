@@ -11,6 +11,7 @@ import { Flux1Module } from './flux1/flux1.module';
 import { BoardsModule } from './boards/boards.module';
 import { ListsModule } from './lists/lists.module';
 import { TasksModule } from './tasks/tasks.module';
+import { TagsModule } from './tags/tags.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TasksModule } from './tasks/tasks.module';
     BoardsModule,
     ListsModule,
     TasksModule,
+    TagsModule,
   ],
   providers: [MailService],
   controllers: [TodosController],
