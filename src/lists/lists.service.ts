@@ -21,7 +21,7 @@ export class ListsService {
         },
       },
       include: {
-        todos: true,
+        tasks: true,
       },
     });
     return createdList;

@@ -27,7 +27,7 @@ export class BoardsService {
               {
                 name: 'À faire',
                 rank: 0,
-                todos: {
+                tasks: {
                   create: [
                     {
                       title: `Inviter d'autres utilisateurs`,
@@ -112,7 +112,7 @@ export class BoardsService {
       Object.assign(selectParams.select, {
         lists: {
           include: {
-            todos: true,
+            tasks: true,
           },
         },
         guests: {

@@ -61,7 +61,7 @@ model List {
   progression Progression @default(TODO)
   board       Board       @relation(fields: [boardId], references: [id], onDelete: Cascade)
   boardId     Int
-  todos       Todo[]
+  tasks       Todo[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
