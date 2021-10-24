@@ -1,9 +1,16 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import {
+  WebSocketGateway,
+  SubscribeMessage,
+  MessageBody,
+} from '@nestjs/websockets';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { Socket } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: { origin: '*' },
+})
 export class TasksGateway {
   constructor(private readonly tasksService: TasksService) {}
 
@@ -13,8 +20,8 @@ export class TasksGateway {
   }
 
   @SubscribeMessage('findAllTasks')
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(socket: Socket, data) {
+    return this.tasksService.findBoardTasks(data.boardId);
   }
 
   @SubscribeMessage('findOneTask')
@@ -30,5 +37,9 @@ export class TasksGateway {
   @SubscribeMessage('removeTask')
   remove(@MessageBody() id: number) {
     return this.tasksService.remove(id);
+  }
+
+  afterInit() {
+    console.log('Initialized!');
   }
 }

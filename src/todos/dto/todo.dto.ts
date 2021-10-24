@@ -70,7 +70,7 @@ export class TodoDto {
   @ApiProperty()
   @IsOptional()
   @IsEnum(Progression)
-  progression: 'TODO' | 'IN_PROGRESS' | 'DONE';
+  progression?: 'TODO' | 'IN_PROGRESS' | 'DONE';
 
   /**
    * Etat privé du todo
