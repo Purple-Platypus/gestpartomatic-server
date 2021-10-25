@@ -34,7 +34,6 @@ export class TasksService {
     createTaskData: CreateTaskDto,
   ): Promise<TaskDto> {
     const { listId, assignees, tags, ...taskData } = createTaskData;
-    console.log('createdTask');
 
     const createdTask = await this.prisma.todo.create({
       data: {

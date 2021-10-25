@@ -5,11 +5,13 @@ import {
   WebSocketServer,
   ConnectedSocket,
   OnGatewayConnection,
+  WsResponse,
 } from '@nestjs/websockets';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Server, Socket } from 'socket.io';
+import CreateTaskDto from './dto/create-task.dto';
+import TaskDto from './dto/task.dto';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:3000', credentials: true },
@@ -35,14 +37,14 @@ export class TasksGateway implements OnGatewayConnection {
   @SubscribeMessage('createTask')
   async create(
     @ConnectedSocket() socket: Socket,
-    @MessageBody() createTaskDto: CreateTaskDto,
-  ) {
+    @MessageBody('boardId') boardId: string,
+    @MessageBody('task') taskData: CreateTaskDto,
+  ): Promise<TaskDto> {
     const author = await this.tasksService.getUserFromSocket(socket);
-    const createdTask = await this.tasksService.create(
-      author.id,
-      createTaskDto,
-    );
-    socket.emit('addTask', createdTask);
+    const createdTask = await this.tasksService.create(author.id, taskData);
+
+    this.server.to('board_' + boardId).emit('addTask', createdTask);
+    return createdTask;
   }
 
   @SubscribeMessage('findOneTask')
