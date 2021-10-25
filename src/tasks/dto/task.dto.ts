@@ -60,12 +60,12 @@ export class TaskDto {
   assignees?: UserDto[];
 
   /**
-   * Etiquettes de la tâche
+   * Ids des étiquettes de la tâche
    * @example NORMAL
    */
   @ApiProperty()
   @IsOptional()
-  tags?: TagDto[];
+  tags?: number[];
 
   /**
    * Liste de la tâche

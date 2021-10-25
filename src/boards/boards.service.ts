@@ -112,7 +112,15 @@ export class BoardsService {
       Object.assign(selectParams.select, {
         lists: {
           include: {
-            tasks: true,
+            tasks: {
+              include: {
+                tags: {
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+            },
           },
         },
         guests: {

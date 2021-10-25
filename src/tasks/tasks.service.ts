@@ -4,7 +4,6 @@ import { parse } from 'cookie';
 import { Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
 import { PrismaService } from 'src/prisma/prisma.service';
-import TodoDto from 'src/todos/dto/todo.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import TaskDto from './dto/task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -35,6 +34,10 @@ export class TasksService {
   ): Promise<TaskDto> {
     const { listId, assignees, tags, ...taskData } = createTaskData;
 
+    const deepenTags = tags.map((tagId) => {
+      return { id: tagId };
+    });
+
     const createdTask = await this.prisma.todo.create({
       data: {
         title: taskData.title,
@@ -42,6 +45,9 @@ export class TasksService {
         rank: taskData.rank,
         author: { connect: { id: authorId } },
         list: { connect: { id: listId } },
+        tags: {
+          connect: deepenTags,
+        },
       },
     });
 
