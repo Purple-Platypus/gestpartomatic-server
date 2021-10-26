@@ -52,16 +52,16 @@ export class TaskDto {
   priority?: 'NORMAL' | 'HIGH';
 
   /**
-   * Responsables de la tâche
-   * @example NORMAL
+   * Ids des responsables de la tâche
+   * @example ['abc', 'def']
    */
   @ApiProperty()
   @IsOptional()
-  assignees?: UserDto[];
+  assignees?: string[];
 
   /**
    * Ids des étiquettes de la tâche
-   * @example NORMAL
+   * @example [1, 2, 3]
    */
   @ApiProperty()
   @IsOptional()

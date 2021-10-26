@@ -119,6 +119,11 @@ export class BoardsService {
                     id: true,
                   },
                 },
+                assignees: {
+                  select: {
+                    userId: true,
+                  },
+                },
               },
             },
           },

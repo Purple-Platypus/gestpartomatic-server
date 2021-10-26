@@ -38,6 +38,14 @@ export class TasksService {
       return { id: tagId };
     });
 
+    const deepenAssignees = assignees.map((assigneeId) => {
+      return {
+        user: {
+          connect: { id: assigneeId },
+        },
+      };
+    });
+
     const createdTask = await this.prisma.todo.create({
       data: {
         title: taskData.title,
@@ -47,6 +55,9 @@ export class TasksService {
         list: { connect: { id: listId } },
         tags: {
           connect: deepenTags,
+        },
+        assignees: {
+          create: deepenAssignees,
         },
       },
     });
