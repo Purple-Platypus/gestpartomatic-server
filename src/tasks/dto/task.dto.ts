@@ -57,7 +57,7 @@ export class TaskDto {
    */
   @ApiProperty()
   @IsOptional()
-  assignees?: string[];
+  assignees?: string[] | object[];
 
   /**
    * Ids des étiquettes de la tâche
@@ -65,7 +65,7 @@ export class TaskDto {
    */
   @ApiProperty()
   @IsOptional()
-  tags?: number[];
+  tags?: number[] | object[];
 
   /**
    * Liste de la tâche

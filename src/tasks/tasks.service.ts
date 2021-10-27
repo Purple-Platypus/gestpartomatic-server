@@ -60,6 +60,23 @@ export class TasksService {
           create: deepenAssignees,
         },
       },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        rank: true,
+        listId: true,
+        tags: {
+          select: {
+            id: true,
+          },
+        },
+        assignees: {
+          select: {
+            userId: true,
+          },
+        },
+      },
     });
 
     return createdTask;
