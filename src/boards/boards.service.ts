@@ -67,7 +67,7 @@ export class BoardsService {
   }
 
   async findAll(userId: string): Promise<BoardDto[]> {
-    const selectParams = {
+    const userBoards = await this.prisma.board.findMany({
       select: {
         id: true,
         name: true,
@@ -75,10 +75,15 @@ export class BoardsService {
         isPrivate: true,
         creatorId: true,
         isArchived: true,
+        guests: {
+          select: {
+            userId: true,
+            role: true,
+          },
+        },
       },
       where: {
         OR: [
-          { creatorId: userId },
           { isPrivate: false },
           {
             guests: {
@@ -89,9 +94,7 @@ export class BoardsService {
           },
         ],
       },
-    };
-
-    const userBoards = await this.prisma.board.findMany(selectParams);
+    });
     return userBoards;
   }
 
@@ -163,6 +166,13 @@ export class BoardsService {
         name: true,
         description: true,
         isPrivate: true,
+        isArchived: true,
+        guests: {
+          select: {
+            userId: true,
+            role: true,
+          },
+        },
       },
     });
     return updatedBoard;

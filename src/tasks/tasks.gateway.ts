@@ -53,8 +53,13 @@ export class TasksGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage('updateTask')
-  update(@MessageBody() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(updateTaskDto.id, updateTaskDto);
+  async update(
+    @MessageBody('boardId') boardId: string,
+    @MessageBody('updateData') updateData: UpdateTaskDto,
+  ) {
+    const updatedTask = await this.tasksService.update(updateData);
+    this.server.to('board_' + boardId).emit('updateTask', updatedTask);
+    return updatedTask;
   }
 
   @SubscribeMessage('removeTask')

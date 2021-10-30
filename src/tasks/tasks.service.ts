@@ -90,8 +90,38 @@ export class TasksService {
     return `This action returns a #${id} task`;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(updateTaskData: UpdateTaskDto) {
+    const { id, tags, assignees, ...taskData } = updateTaskData;
+    const deepTags = tags.map((tagId) => {
+      return { id: tagId };
+    });
+
+    Object.assign(taskData, { tags: { set: deepTags } });
+
+    const updatedTask = await this.prisma.todo.update({
+      where: {
+        id,
+      },
+      data: taskData,
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        rank: true,
+        listId: true,
+        tags: {
+          select: {
+            id: true,
+          },
+        },
+        assignees: {
+          select: {
+            userId: true,
+          },
+        },
+      },
+    });
+    return updatedTask;
   }
 
   remove(id: number) {

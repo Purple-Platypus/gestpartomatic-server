@@ -2,6 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { List, User } from '@prisma/client';
 import { IsDefined, IsOptional } from 'class-validator';
 
+class GuestRoleDto {
+  userId: string;
+  role: 'ADMIN' | 'USER';
+}
+
 export class BoardDto {
   /**
    * ID unique du tableau
@@ -54,7 +59,7 @@ export class BoardDto {
    */
   @ApiProperty()
   @IsOptional()
-  guests?: User[];
+  guests?: GuestRoleDto[];
 
   /**
    * Colonnes du tableau
