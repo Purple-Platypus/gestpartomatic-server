@@ -27,6 +27,14 @@ export class TagDto {
   color: string;
 
   /**
+   * Libellé de l'étiquette affiché en blanc
+   * @example true
+   */
+  @ApiProperty()
+  @IsDefined()
+  isDark: boolean;
+
+  /**
    * Todos rattachés à l'étiquette
    */
   @ApiProperty()

@@ -116,6 +116,7 @@ model Tag {
   id        Int      @id @default(autoincrement())
   label     String
   color     String
+  isDark    Boolean
   todos     Todo[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -21,6 +21,7 @@ export class TagsService {
         id: true,
         label: true,
         color: true,
+        isDark: true,
       },
     };
     const tags = await this.prisma.tag.findMany(selectParams);
