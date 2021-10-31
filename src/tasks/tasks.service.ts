@@ -82,14 +82,6 @@ export class TasksService {
     return createdTask;
   }
 
-  findAll() {
-    return `This action returns all tasks`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
-  }
-
   async update(updateTaskData: UpdateTaskDto) {
     const { id, tags, assignees, ...taskData } = updateTaskData;
     const deepTags = tags.map((tagId) => {
@@ -122,9 +114,5 @@ export class TasksService {
       },
     });
     return updatedTask;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} task`;
   }
 }

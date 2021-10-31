@@ -12,12 +12,16 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { Server, Socket } from 'socket.io';
 import CreateTaskDto from './dto/create-task.dto';
 import TaskDto from './dto/task.dto';
+import { TagsService } from 'src/tags/tags.service';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:3000', credentials: true },
 })
 export class TasksGateway implements OnGatewayConnection {
-  constructor(private readonly tasksService: TasksService) {}
+  constructor(
+    private readonly tasksService: TasksService,
+    private readonly tagsService: TagsService,
+  ) {}
 
   @WebSocketServer()
   server: Server;
@@ -29,7 +33,7 @@ export class TasksGateway implements OnGatewayConnection {
   @SubscribeMessage('watchBoard')
   watch(
     @ConnectedSocket() socket: Socket,
-    @MessageBody() boardId: string,
+    @MessageBody() boardId: number,
   ): void {
     socket.join('board_' + boardId);
   }
@@ -37,7 +41,7 @@ export class TasksGateway implements OnGatewayConnection {
   @SubscribeMessage('createTask')
   async create(
     @ConnectedSocket() socket: Socket,
-    @MessageBody('boardId') boardId: string,
+    @MessageBody('boardId') boardId: number,
     @MessageBody('task') taskData: CreateTaskDto,
   ): Promise<TaskDto> {
     const author = await this.tasksService.getUserFromSocket(socket);
@@ -47,14 +51,9 @@ export class TasksGateway implements OnGatewayConnection {
     return createdTask;
   }
 
-  @SubscribeMessage('findOneTask')
-  findOne(@MessageBody() id: number) {
-    return this.tasksService.findOne(id);
-  }
-
   @SubscribeMessage('updateTask')
   async update(
-    @MessageBody('boardId') boardId: string,
+    @MessageBody('boardId') boardId: number,
     @MessageBody('updateData') updateData: UpdateTaskDto,
   ) {
     const updatedTask = await this.tasksService.update(updateData);
@@ -62,9 +61,13 @@ export class TasksGateway implements OnGatewayConnection {
     return updatedTask;
   }
 
-  @SubscribeMessage('removeTask')
-  remove(@MessageBody() id: number) {
-    return this.tasksService.remove(id);
+  @SubscribeMessage('removeTag')
+  async removeTag(
+    @MessageBody('boardId') boardId: number,
+    @MessageBody('tagId') tagId: number,
+  ) {
+    await this.tagsService.remove(tagId);
+    this.server.to('board_' + boardId).emit('removeTag', tagId);
   }
 
   afterInit() {

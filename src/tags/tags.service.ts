@@ -37,6 +37,10 @@ export class TagsService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} tag`;
+    return this.prisma.tag.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
