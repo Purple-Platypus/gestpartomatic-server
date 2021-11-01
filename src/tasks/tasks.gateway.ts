@@ -14,6 +14,7 @@ import CreateTaskDto from './dto/create-task.dto';
 import TaskDto from './dto/task.dto';
 import { TagsService } from 'src/tags/tags.service';
 import { UpdateTagDto } from 'src/tags/dto/update-tag.dto';
+import CreateTagDto from 'src/tags/dto/create-tag.dto';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:3000', credentials: true },
@@ -62,13 +63,13 @@ export class TasksGateway implements OnGatewayConnection {
     return updatedTask;
   }
 
-  @SubscribeMessage('removeTag')
-  async removeTag(
+  @SubscribeMessage('createTag')
+  async createTag(
     @MessageBody('boardId') boardId: number,
-    @MessageBody('tagId') tagId: number,
+    @MessageBody('tagData') tagData: CreateTagDto,
   ) {
-    await this.tagsService.remove(tagId);
-    this.server.to('board_' + boardId).emit('removeTag', tagId);
+    const createdTag = await this.tagsService.create(tagData);
+    this.server.to('board_' + boardId).emit('createTag', createdTag);
   }
 
   @SubscribeMessage('updateTag')
@@ -79,6 +80,15 @@ export class TasksGateway implements OnGatewayConnection {
   ) {
     const updatedTag = await this.tagsService.update(tagId, tagData);
     this.server.to('board_' + boardId).emit('updateTag', updatedTag);
+  }
+
+  @SubscribeMessage('removeTag')
+  async removeTag(
+    @MessageBody('boardId') boardId: number,
+    @MessageBody('tagId') tagId: number,
+  ) {
+    await this.tagsService.remove(tagId);
+    this.server.to('board_' + boardId).emit('removeTag', tagId);
   }
 
   afterInit() {
