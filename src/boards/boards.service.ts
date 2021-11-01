@@ -17,6 +17,7 @@ export class BoardsService {
         data: {
           name: createBoardData.name,
           description: createBoardData.description,
+          isPrivate: createBoardData.isPrivate,
           creator: {
             connect: {
               id: userId,
@@ -53,6 +54,18 @@ export class BoardsService {
                 connect: { id: userId },
               },
               role: 'ADMIN',
+            },
+          },
+        },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          isPrivate: true,
+          guests: {
+            select: {
+              userId: true,
+              role: true,
             },
           },
         },

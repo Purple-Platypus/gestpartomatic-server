@@ -49,7 +49,7 @@ export class TasksGateway implements OnGatewayConnection {
     const author = await this.tasksService.getUserFromSocket(socket);
     const createdTask = await this.tasksService.create(author.id, taskData);
 
-    this.server.to('board_' + boardId).emit('addTask', createdTask);
+    this.server.to('board_' + boardId).emit('createTask', createdTask);
     return createdTask;
   }
 
