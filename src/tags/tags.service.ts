@@ -33,8 +33,21 @@ export class TagsService {
     return `This action returns a #${id} tag`;
   }
 
-  update(id: number, updateTagDto: UpdateTagDto) {
-    return `This action updates a #${id} tag`;
+  async update(id: number, tagData: UpdateTagDto) {
+    const updatedTag = await this.prisma.tag.update({
+      data: tagData,
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        label: true,
+        color: true,
+        isDark: true,
+      },
+    });
+
+    return updatedTag;
   }
 
   remove(id: number) {

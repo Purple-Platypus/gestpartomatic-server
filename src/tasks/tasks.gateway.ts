@@ -13,6 +13,7 @@ import { Server, Socket } from 'socket.io';
 import CreateTaskDto from './dto/create-task.dto';
 import TaskDto from './dto/task.dto';
 import { TagsService } from 'src/tags/tags.service';
+import { UpdateTagDto } from 'src/tags/dto/update-tag.dto';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:3000', credentials: true },
@@ -68,6 +69,16 @@ export class TasksGateway implements OnGatewayConnection {
   ) {
     await this.tagsService.remove(tagId);
     this.server.to('board_' + boardId).emit('removeTag', tagId);
+  }
+
+  @SubscribeMessage('updateTag')
+  async updateTag(
+    @MessageBody('boardId') boardId: number,
+    @MessageBody('tagId') tagId: number,
+    @MessageBody('tagData') tagData: UpdateTagDto,
+  ) {
+    const updatedTag = await this.tagsService.update(tagId, tagData);
+    this.server.to('board_' + boardId).emit('updateTag', updatedTag);
   }
 
   afterInit() {
