@@ -9,5 +9,7 @@ export class UpdateTaskDto extends PartialType(
     'description',
     'tags',
     'assignees',
+    'listId',
+    'priority',
   ] as const),
 ) {}

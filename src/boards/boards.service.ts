@@ -129,7 +129,13 @@ export class BoardsService {
         lists: {
           include: {
             tasks: {
-              include: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                rank: true,
+                listId: true,
+                priority: true,
                 tags: {
                   select: {
                     id: true,

@@ -15,6 +15,25 @@ export class TasksService {
     private readonly authService: AuthService,
   ) {}
 
+  private selectList = {
+    id: true,
+    title: true,
+    description: true,
+    rank: true,
+    listId: true,
+    priority: true,
+    tags: {
+      select: {
+        id: true,
+      },
+    },
+    assignees: {
+      select: {
+        id: true,
+      },
+    },
+  };
+
   async getUserFromSocket(socket: Socket) {
     const cookie = socket.request.headers.cookie;
 
@@ -56,23 +75,7 @@ export class TasksService {
           connect: deepenAssignees,
         },
       },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        rank: true,
-        listId: true,
-        tags: {
-          select: {
-            id: true,
-          },
-        },
-        assignees: {
-          select: {
-            id: true,
-          },
-        },
-      },
+      select: this.selectList,
     });
 
     return createdTask;
@@ -104,36 +107,7 @@ export class TasksService {
         id,
       },
       data: taskData,
-      // data: {
-      //   assignees: {
-      //     set: [
-      //       {
-      //         userId_todoId: {
-      //           connect: {
-      //             id: 1,
-      //           },
-      //         },
-      //       },
-      //     ],
-      //   },
-      // },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        rank: true,
-        listId: true,
-        tags: {
-          select: {
-            id: true,
-          },
-        },
-        assignees: {
-          select: {
-            id: true,
-          },
-        },
-      },
+      select: this.selectList,
     });
     return updatedTask;
   }
