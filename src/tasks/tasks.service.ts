@@ -39,11 +39,7 @@ export class TasksService {
     });
 
     const deepenAssignees = assignees.map((assigneeId) => {
-      return {
-        user: {
-          connect: { id: assigneeId },
-        },
-      };
+      return { id: assigneeId };
     });
 
     const createdTask = await this.prisma.todo.create({
@@ -57,7 +53,7 @@ export class TasksService {
           connect: deepenTags,
         },
         assignees: {
-          create: deepenAssignees,
+          connect: deepenAssignees,
         },
       },
       select: {
@@ -73,7 +69,7 @@ export class TasksService {
         },
         assignees: {
           select: {
-            userId: true,
+            id: true,
           },
         },
       },
@@ -84,17 +80,43 @@ export class TasksService {
 
   async update(updateTaskData: UpdateTaskDto) {
     const { id, tags, assignees, ...taskData } = updateTaskData;
-    const deepTags = tags.map((tagId) => {
-      return { id: tagId };
-    });
 
-    Object.assign(taskData, { tags: { set: deepTags } });
+    if (tags) {
+      const deepenTags = tags.map((tagId) => {
+        return { id: tagId };
+      });
+      Object.assign(taskData, {
+        tags: { set: deepenTags },
+      });
+    }
+
+    if (assignees) {
+      const deepenAssignees = assignees.map((assigneeId) => {
+        return { id: assigneeId };
+      });
+      Object.assign(taskData, {
+        assignees: { set: deepenAssignees },
+      });
+    }
 
     const updatedTask = await this.prisma.todo.update({
       where: {
         id,
       },
       data: taskData,
+      // data: {
+      //   assignees: {
+      //     set: [
+      //       {
+      //         userId_todoId: {
+      //           connect: {
+      //             id: 1,
+      //           },
+      //         },
+      //       },
+      //     ],
+      //   },
+      // },
       select: {
         id: true,
         title: true,
@@ -108,7 +130,7 @@ export class TasksService {
         },
         assignees: {
           select: {
-            userId: true,
+            id: true,
           },
         },
       },

@@ -137,7 +137,7 @@ export class BoardsService {
                 },
                 assignees: {
                   select: {
-                    userId: true,
+                    id: true,
                   },
                 },
               },
