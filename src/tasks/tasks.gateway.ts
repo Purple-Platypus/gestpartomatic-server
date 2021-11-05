@@ -91,6 +91,17 @@ export class TasksGateway implements OnGatewayConnection {
     this.server.to('board_' + boardId).emit('removeTag', tagId);
   }
 
+  @SubscribeMessage('updateTasksOrder')
+  async updateTasksOrder(
+    @MessageBody('boardId') boardId: number,
+    @MessageBody('changeOrderData') changeOrderData: object,
+  ) {
+    await this.tasksService.updateTasksOrder(changeOrderData);
+    this.server
+      .to('board_' + boardId)
+      .emit('updateTasksOrder', changeOrderData);
+  }
+
   afterInit() {
     console.log('Initialized!');
   }

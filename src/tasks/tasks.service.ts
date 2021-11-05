@@ -111,4 +111,59 @@ export class TasksService {
     });
     return updatedTask;
   }
+
+  async updateTasksOrder(updateData): Promise<void> {
+    let updateParams;
+
+    if (updateData.type == 'moved') {
+      const isRankIncreased = updateData.oldIndex < updateData.newIndex;
+      updateParams = {
+        rankChange: isRankIncreased ? { decrement: 1 } : { increment: 1 },
+        ranksSelection: {
+          gte: isRankIncreased ? updateData.oldIndex : updateData.newIndex,
+          lte: isRankIncreased ? updateData.newIndex : updateData.oldIndex,
+        },
+      };
+    } else if (updateData.type == 'added') {
+      updateParams = {
+        rankChange: { increment: 1 },
+        ranksSelection: {
+          gte: updateData.newIndex,
+        },
+      };
+    } else {
+      updateParams = {
+        rankChange: { decrement: 1 },
+        ranksSelection: {
+          gt: updateData.oldIndex,
+        },
+      };
+    }
+
+    await this.updateRanks(updateData.listId, updateParams);
+
+    if (updateData.type != 'removed') {
+      await this.update({
+        id: updateData.taskId,
+        rank: updateData.newIndex,
+        listId: updateData.listId,
+      });
+    }
+  }
+
+  private async updateRanks(listId, updateParams): Promise<void> {
+    await this.prisma.todo.updateMany({
+      data: {
+        rank: updateParams.rankChange,
+      },
+      where: {
+        AND: [
+          {
+            rank: updateParams.ranksSelection,
+          },
+          { listId },
+        ],
+      },
+    });
+  }
 }
