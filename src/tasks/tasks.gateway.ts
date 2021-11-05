@@ -15,6 +15,7 @@ import TaskDto from './dto/task.dto';
 import { TagsService } from 'src/tags/tags.service';
 import { UpdateTagDto } from 'src/tags/dto/update-tag.dto';
 import CreateTagDto from 'src/tags/dto/create-tag.dto';
+import { TodosService } from 'src/todos/todos.service';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:3000', credentials: true },

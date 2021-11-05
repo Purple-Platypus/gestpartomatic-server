@@ -8,6 +8,26 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 export class BoardsService {
   constructor(private prisma: PrismaService) {}
 
+  private tasksSelectList = {
+    id: true,
+    title: true,
+    description: true,
+    rank: true,
+    listId: true,
+    priority: true,
+    isArchived: true,
+    tags: {
+      select: {
+        id: true,
+      },
+    },
+    assignees: {
+      select: {
+        id: true,
+      },
+    },
+  };
+
   async create(
     userId: string,
     createBoardData: CreateBoardDto,
@@ -129,24 +149,7 @@ export class BoardsService {
         lists: {
           include: {
             tasks: {
-              select: {
-                id: true,
-                title: true,
-                description: true,
-                rank: true,
-                listId: true,
-                priority: true,
-                tags: {
-                  select: {
-                    id: true,
-                  },
-                },
-                assignees: {
-                  select: {
-                    id: true,
-                  },
-                },
-              },
+              select: this.tasksSelectList,
             },
           },
         },

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { List, User } from '@prisma/client';
-import { IsDefined, IsEnum, IsOptional } from 'class-validator';
+import { IsBoolean, IsDefined, IsEnum, IsOptional } from 'class-validator';
 import { TagDto } from 'src/tags/dto/tag.dto';
 import UserDto from 'src/users/dto/user.dto';
 
@@ -50,6 +50,15 @@ export class TaskDto {
   @IsOptional()
   @IsEnum(Priority)
   priority?: 'NORMAL' | 'HIGH';
+
+  /**
+   * Archivage de la tâche
+   * @example true
+   */
+  @ApiProperty()
+  @IsOptional()
+  @IsBoolean()
+  isArchived?: boolean;
 
   /**
    * Ids des responsables de la tâche

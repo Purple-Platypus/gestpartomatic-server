@@ -22,6 +22,7 @@ export class TasksService {
     rank: true,
     listId: true,
     priority: true,
+    isArchived: true,
     tags: {
       select: {
         id: true,

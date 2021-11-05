@@ -12,5 +12,6 @@ export class UpdateTaskDto extends PartialType(
     'listId',
     'priority',
     'rank',
+    'isArchived',
   ] as const),
 ) {}
