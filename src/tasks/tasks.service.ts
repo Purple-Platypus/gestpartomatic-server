@@ -167,4 +167,27 @@ export class TasksService {
       },
     });
   }
+
+  async delete(taskId): Promise<any> {
+    const deletedTask = await this.prisma.todo.delete({
+      where: {
+        id: taskId,
+      },
+      select: {
+        rank: true,
+        listId: true,
+      },
+    });
+
+    const updateRanksData = {
+      type: 'removed',
+      oldIndex: deletedTask.rank,
+      listId: deletedTask.listId,
+    };
+    await this.updateTasksOrder(updateRanksData);
+    return {
+      taskId,
+      listId: deletedTask.listId,
+    };
+  }
 }

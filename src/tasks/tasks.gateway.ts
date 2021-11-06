@@ -64,6 +64,15 @@ export class TasksGateway implements OnGatewayConnection {
     return updatedTask;
   }
 
+  @SubscribeMessage('removeTask')
+  async delete(
+    @MessageBody('boardId') boardId: number,
+    @MessageBody('taskId') taskId: number,
+  ) {
+    const deletedTask = await this.tasksService.delete(taskId);
+    this.server.to('board_' + boardId).emit('removeTask', deletedTask);
+  }
+
   @SubscribeMessage('createTag')
   async createTag(
     @MessageBody('boardId') boardId: number,
