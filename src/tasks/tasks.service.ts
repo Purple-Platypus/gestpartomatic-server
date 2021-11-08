@@ -144,11 +144,26 @@ export class TasksService {
     await this.updateRanks(updateData.listId, updateParams);
 
     if (updateData.type != 'removed') {
-      await this.update({
+      const updatedTask = {
         id: updateData.taskId,
         rank: updateData.newIndex,
         listId: updateData.listId,
-      });
+      };
+
+      if (updateData.type == 'added') {
+        const destinationList = await this.prisma.list.findUnique({
+          where: {
+            id: updateData.listId,
+          },
+          select: {
+            progression: true,
+          },
+        });
+
+        updatedTask['progression'] = destinationList.progression;
+      }
+
+      await this.update(updatedTask);
     }
   }
 
