@@ -27,14 +27,6 @@ export class ListsService {
     return createdList;
   }
 
-  // findAll() {
-  //   return `This action returns all lists`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} list`;
-  // }
-
   async update(
     listId: number,
     updateListData: UpdateListDto,
@@ -51,6 +43,18 @@ export class ListsService {
         rank: true,
       },
     });
+
+    if (updateListData.hasOwnProperty('progression')) {
+      await this.prisma.todo.updateMany({
+        where: {
+          listId: listId,
+        },
+        data: {
+          progression: updateListData.progression,
+        },
+      });
+    }
+
     return updatedList;
   }
 
