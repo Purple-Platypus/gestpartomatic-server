@@ -26,8 +26,6 @@ model User {
   // comments        Comment[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
-  Todo            Todo?           @relation(fields: [todoId], references: [id])
-  todoId          Int?
 }
 
 model Board {
@@ -83,14 +81,12 @@ model Todo {
   listId      Int?
   author      User        @relation(name: "creation", fields: [authorId], references: [id])
   authorId    String
-  assignees   User[]
+  assignees   User[]      @relation("assignation", references: [id])
   tags        Tag[]
   // comments    Comment[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   // milestoneId Int?
-  User        User?       @relation("assignation", fields: [userId], references: [id])
-  userId      String?
 }
 
 // model Comment {
