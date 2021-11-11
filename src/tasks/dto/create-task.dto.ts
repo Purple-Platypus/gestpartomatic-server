@@ -8,6 +8,7 @@ export class CreateTaskDto extends PickType(TaskDto, [
   'listId',
   'tags',
   'assignees',
+  'deadline',
 ] as const) {}
 
 export default CreateTaskDto;

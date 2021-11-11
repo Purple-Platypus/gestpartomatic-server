@@ -17,6 +17,7 @@ export class BoardsService {
     priority: true,
     isArchived: true,
     progression: true,
+    deadline: true,
     tags: {
       select: {
         id: true,

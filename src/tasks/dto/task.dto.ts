@@ -43,6 +43,14 @@ export class TaskDto {
   description?: string;
 
   /**
+   * Date de fin
+   * @example 2021-07-04
+   */
+  @ApiProperty()
+  @IsOptional()
+  deadline?: Date;
+
+  /**
    * Priorité de la tâche
    * @example NORMAL
    */

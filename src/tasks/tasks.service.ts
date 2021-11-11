@@ -23,6 +23,7 @@ export class TasksService {
     listId: true,
     priority: true,
     isArchived: true,
+    deadline: true,
     tags: {
       select: {
         id: true,
@@ -66,6 +67,7 @@ export class TasksService {
       data: {
         title: taskData.title,
         description: taskData.description,
+        deadline: taskData.deadline,
         rank: taskData.rank,
         author: { connect: { id: authorId } },
         list: { connect: { id: listId } },
