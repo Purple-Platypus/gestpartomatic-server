@@ -40,13 +40,13 @@ export class UsersController {
   async getProfile(
     @Req() req: User,
     @Query('withBoards') withBoards: string,
-  ): Promise<UserDto> {
+  ): Promise<{ user: UserDto }> {
     const params = {
       getBoards: withBoards === 'true',
     };
 
     const user = await this.usersService.getById(req['user'].id, params);
-    return user;
+    return { user };
   }
 
   // Récupération de la liste des utilisateurs

@@ -69,26 +69,6 @@ export class AuthService {
     }
   }
 
-  //   // // Constitution du token JWT et d'un cookie httpOnly à retourner au client
-  //   // public getAuthCookie(user: User, cookieName: string) {
-  //   //   const secret = this.configService.get('JWT_SECRET');
-  //   //   const expiresIn = this.configService.get('JWT_EXPIRATION_TIME');
-  //   //   const payload: TokenPayload = {
-  //   //     email: user.email,
-  //   //     id: user.id.toString(),
-  //   //   };
-
-  //   //   const token = this.jwtService.sign(payload, {
-  //   //     secret,
-  //   //     expiresIn: expiresIn + 's',
-  //   //   });
-
-  //   //   return {
-  //   //     cookie: `${cookieName}=${token}; HttpOnly; Path=/; Max-Age=${expiresIn}`,
-  //   //     token,
-  //   //   };
-  //   // }
-
   // Constitution du cookie d'authentifaction
   public getCookieWithJwtToken(user: User): string {
     const secret = this.configService.get('JWT_SECRET');
@@ -161,18 +141,6 @@ export class AuthService {
     );
 
     await this.mailService.sendResetEmail(user, token);
-
-    // const emailContent = this.emailTemplatesService.getResetContent(
-    //   user,
-    //   token,
-    // );
-
-    // return this.mailService.sendMail({
-    //   to: sendResetEmailData.email,
-    //   from: `"ne-pas-repondre" <${this.configService.get('RESET_EMAIL_FROM')}>`,
-    //   subject: 'todo | Mot de passe oublié',
-    //   html: emailContent,
-    // });
   }
 
   // Modification du mot de passe
